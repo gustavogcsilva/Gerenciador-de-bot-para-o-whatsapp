@@ -12,13 +12,16 @@ app.listen(port, () => console.log(`Servidor HTTP rodando na porta ${port}`));
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
-        headless: true, // Obrigatório em servidores
-        executablePath: '/opt/render/.cache/puppeteer/chrome/linux-146.0.7680.153/chrome-linux64/chrome', 
+        headless: true,
+        // Usamos uma lógica que tenta o caminho do Render, se não achar, tenta o padrão
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/google-chrome',
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
             '--disable-dev-shm-usage',
-            '--disable-gpu'
+            '--disable-gpu',
+            '--no-zygote',
+            '--single-process'
         ]
     }
 });
