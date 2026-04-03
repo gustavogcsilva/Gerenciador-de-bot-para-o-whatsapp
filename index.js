@@ -9,11 +9,28 @@ const port = process.env.PORT || 3000;
 app.get('/', (req, res) => res.send('GCS CORE SYSTEM ONLINE 🚀'));
 app.listen(port, () => console.log(`Servidor HTTP rodando na porta ${port}`));
 
+const fs = require('fs');
+const path = require('path');
+
+// Função para buscar o executável do Chrome dinamicamente no Render
+const getChromePath = () => {
+    const baseDir = '/opt/render/.cache/puppeteer/chrome';
+    if (fs.existsSync(baseDir)) {
+        const folders = fs.readdirSync(baseDir);
+        if (folders.length > 0) {
+            // Tenta localizar o executável dentro da primeira pasta de versão encontrada
+            const chromePath = path.join(baseDir, folders[0], 'chrome-linux64/chrome');
+            if (fs.existsSync(chromePath)) return chromePath;
+        }
+    }
+    return '/usr/bin/google-chrome'; // Fallback padrão
+};
+
 const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
         headless: true,
-        // Removemos o caminho fixo com números para evitar erros de versão
+        executablePath: getChromePath(),
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
