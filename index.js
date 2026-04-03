@@ -20,3 +20,11 @@ const getChromePath = () => {
     console.log('💡 Usando fallback: /usr/bin/google-chrome');
     return '/usr/bin/google-chrome';
 };
+// Captura erros que fariam o bot fechar silenciosamente
+process.on('uncaughtException', (err) => {
+    console.error('❌ ERRO CRÍTICO NÃO TRATADO:', err);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('⚠️ REJEIÇÃO NÃO TRATADA EM:', promise, 'razão:', reason);
+});
