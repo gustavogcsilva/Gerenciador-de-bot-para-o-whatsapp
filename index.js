@@ -10,17 +10,14 @@ app.get('/', (req, res) => res.send('GCS CORE SYSTEM ONLINE 🚀'));
 app.listen(port, () => console.log(`Servidor HTTP rodando na porta ${port}`));
 
 const client = new Client({
-    authStrategy: new LocalAuth(), // LEMBRE-SE: Não suba a pasta .wwebjs_auth ao GitHub!
+    authStrategy: new LocalAuth(),
     puppeteer: {
-        headless: true, // OBRIGATÓRIO para rodar no Render/Nuvem
+        headless: true, // Obrigatório em servidores
+        executablePath: '/opt/render/.cache/puppeteer/chrome/linux-146.0.7680.153/chrome-linux64/chrome', 
         args: [
-            '--no-sandbox', 
+            '--no-sandbox',
             '--disable-setuid-sandbox',
-            '--disable-dev-shm-usage', // Ajuda a economizar memória no Render
-            '--disable-accelerated-2d-canvas',
-            '--no-first-run',
-            '--no-zygote',
-            '--single-process', // Reduz uso de CPU
+            '--disable-dev-shm-usage',
             '--disable-gpu'
         ]
     }
