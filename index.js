@@ -13,8 +13,7 @@ const client = new Client({
     authStrategy: new LocalAuth(),
     puppeteer: {
         headless: true,
-        // Usamos uma lógica que tenta o caminho do Render, se não achar, tenta o padrão
-        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/google-chrome',
+        // Removemos o caminho fixo com números para evitar erros de versão
         args: [
             '--no-sandbox',
             '--disable-setuid-sandbox',
